@@ -31,7 +31,7 @@ const Provider = (props) => {
       begin, setBegin,
       end, setEnd,
       board, setBoard,
-      pathFinder
+      pathFinder, clear
     }}
     >
       {props.children}
