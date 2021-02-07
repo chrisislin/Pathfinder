@@ -27,10 +27,71 @@ export default class Dijkstra{
   }
 
   execute(){
-    console.log('Hey')
+    this.pq.queue({ x: this.begin.x, y: this.begin.y, d:0 });
+    this.dist[this.begin.x][this.begin.y] = 0;
+    let find = false;
+
+    while(this.pq.length) {
+      const current = this.pq.peek();
+      this.pq.dequeue();
+      const currentX = current.x;
+      const currentY = current.y;
+      const currentD = current.d;
+
+      for(let i=0; i<4; i++){
+        const nextX = currentX + row[i];
+        const nextY = currentY + col[i];
+
+        if(nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
+        if(this.dist[currentX][currentY] + 1 >= this.dist[nextX][nextY]) continue;
+
+        if(nextX === this.end.x && nextY === this.end.y){
+          this.copy[nextX][nextY].visit = true;
+          this.prev[nextX][nextY].x = currentX;
+          this.prev[nextX][nextY].y = currentY;
+          find = true;
+          break;
+        }
+        
+        this.copy[nextX][nextY].color = VISIT_COLOR;
+        this.copy[nextX][nextY].visit = true;
+
+        this.dist[nextX][nextY] = this.dist[currentX][currentY] + 1;
+        this.prev[nextX][nextY].x = currentX;
+        this.prev[nextX][nextY].y = currentY;
+        this.pq.queue({
+          x: nextX,
+          y: nextY,
+          d: this.dist[nextX][nextY] 
+        });
+      }
+      const temp = JSON.parse(JSON.stringify(this.copy));
+      setTimeout(() => { this.setState(temp) }, this.delay*currentD);
+      if(find) break;
+    }
   }
 
   paintShortestPath(){
-    
+    this.copy[this.end.x][this.end.y].visit = false;
+    const path = [];
+    let x = this.end.x;
+    let y = this.end.y;
+
+    while(this.prev[x][y].x !== -1 && this.prev[x][y].y !== -1){
+      path.push({ x,y });
+      const tempX = x, tempY = y;
+      x = this.prev[tempX][tempY].x;
+      y = this.prev[tempX][tempY].y;
+    }
+    path.push({ x: this.begin.x, y: this.begin.y });
+
+    for(let i =path.length-1; i>=0; i--){
+      x = path[i].x;
+      y = path[i].y;
+      this.copy[x][y].color = SHORT_COLOR;
+      const temp = JSON.parse(JSON.stringify(this.copy));
+      setTimeout(() => { this.setState(temp) }, this.delay*(path.length-i));
+    }
+
   }
 }
