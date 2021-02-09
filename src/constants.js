@@ -5,4 +5,4 @@ export const SHORT_COLOR = 'red';
 export const FIXED_COLOR = 'black';
 
 export const DIJKSTRA = 'dijkstra';
-export const FLOYD = 'floyd';
+export const BELLMAN_FORD = 'bellman_ford';

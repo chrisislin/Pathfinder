@@ -1,8 +1,9 @@
 import React, { useState, useContext, useEffect } from 'react';
-import { DIJKSTRA, FLOYD } from 'constants.js';
+import { DIJKSTRA, BELLMAN_FORD } from 'constants.js';
 import { Context } from 'Provider';
 import PathFinder from 'algo/index.js';
 import './Header.scss';
+import { clear } from 'sisteransi';
 
 const Header = () => {
   const [type, setType] = useState(DIJKSTRA);
@@ -24,6 +25,10 @@ const Header = () => {
     pathFinder.current.execute();
   };
 
+  const onClear = () => {
+    clear();
+  };
+
   useEffect(() => {
     if (board[end.x][end.y].visit) {
       pathFinder.current.paintShortestPath();
@@ -34,7 +39,7 @@ const Header = () => {
     <header className="header">
       <select className="header_select" onChange={onSelectChange}>>
         <option value={DIJKSTRA} defaultChecked={true}>Dijkstra</option>
-        <option value={FLOYD}>Floyd</option>
+        <option value={BELLMAN_FORD}>Bellman-Ford</option>
       </select>
       <button className="header_visualize" onClick={onVisualize}>
         Click on me
