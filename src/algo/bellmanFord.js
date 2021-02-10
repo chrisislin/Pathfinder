@@ -1,8 +1,4 @@
-import {
-  BOARD_ROW,
-  BOARD_COL,
-  VISIT_COLOR,
-} from 'constants.js';
+import { BOARD_ROW, BOARD_COL, VISIT_COLOR } from 'constants.js';
 import PathFinder from './pathFinder';
 
 export default class BellmanFord extends PathFinder {
@@ -19,8 +15,8 @@ export default class BellmanFord extends PathFinder {
       for(let j=0; j<BOARD_COL; j++){
         let isUpdated = false;
         for(let k=0; k<4; k++){
-          const nextX = i + this.dx[k];
-          const nextY = j + this.dy[k];
+          const nextX = i + this.row[k];
+          const nextY = j + this.col[k];
           if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
           if (dist[i][j] === Infinity || dist[i][j] + 1 >= dist[nextX][nextY]) continue;
 
