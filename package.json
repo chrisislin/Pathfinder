@@ -8,9 +8,11 @@
     "@testing-library/user-event": "^12.1.10",
     "js-priority-queue": "^0.1.5",
     "node-sass": "^5.0.0",
+    "open-color": "^1.8.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-scripts": "4.0.2",
+    "reset-css": "^5.0.1",
     "web-vitals": "^1.0.1"
   },
   "homepage": "http://chrisislin.github.io/Pathfinder",
