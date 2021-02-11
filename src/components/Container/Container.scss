@@ -1,8 +1,10 @@
 .header { 
   display: flex;
-  flex-direction: row;
   justify-content: center;
+  align-items: center;
   height: 60px;
-  border: 1px solid red;
-  margin-bottom: 20px;
+
+  &_title {
+    font-size: 60px;
+  }
 }
