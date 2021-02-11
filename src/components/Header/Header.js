@@ -55,7 +55,7 @@ const Header = () => {
       </select>
       <select className="header_select" onChange={onDelayChange} defaultValue={300}>
         <option value={550}>slowest</option>
-        <option value={450}>slowest</option>
+        <option value={450}>slow</option>
         <option value={300}>default</option>
         <option value={150}>fast</option>
         <option value={50}>fastest</option>
