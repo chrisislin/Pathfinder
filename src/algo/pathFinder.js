@@ -2,9 +2,22 @@ import { BOARD_ROW, BOARD_COL, VISIT_COLOR, SHORT_COLOR } from 'constants.js';
 
 export default class PathFinder {
   constructor({ begin, end, board, setState, delay }) {
+    this._init();
     this.begin = begin;
     this.end = end;
     this.copy = JSON.parse(JSON.stringify(board));
+    this.setState = setState;
+    this.delay = delay;
+    this.row = [-1, 1, 0, 0];
+    this.col = [0, 0, -1, 1];
+    this.timers = []
+  }
+
+  clear(newBoard) {
+    this.copy = JSON.parse(JSON.stringify(newBoard));
+    this._init();
+  }
+  _init() {
     this.dist = new Array(BOARD_ROW);
     this.prev = new Array(BOARD_ROW);
 
@@ -17,11 +30,6 @@ export default class PathFinder {
         this.prev[i][j] = { x: -1, y: -1 };
       }
     }
-    this.setState = setState;
-    this.delay = delay;
-    this.row = [-1, 1, 0, 0];
-    this.col = [0, 0, -1, 1];
-    this.timers = [];
   }
 
   clearTimers() {

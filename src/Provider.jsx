@@ -1,5 +1,5 @@
 import React, { createContext, useState, useRef } from 'react';
-import { BOARD_ROW, BOARD_COL, FIXED_COLOR } from './constants';
+import { BOARD_ROW, BOARD_COL, FIXED_COLOR, INITIAL_COLOR } from './constants';
 import PathFinder from 'algo/index.js';
 
 const Context = createContext();
@@ -9,11 +9,14 @@ const _board = new Array(BOARD_ROW);
 for(let i=0; i<BOARD_ROW; i++){
   _board[i] = [];
   for(let j=0; j<BOARD_COL; j++){
-    _board[i][j] = {};
+    _board[i][j] = {
+      color: INITIAL_COLOR,
+      visit: false
+    };
   }
 }
 _board[_begin.x][_begin.y] = { color: FIXED_COLOR, visit: true };
-_board[_end.x][_end.y].color = FIXED_COLOR;
+_board[_end.x][_end.y] = {color: FIXED_COLOR, visit:false };
 
 const Provider = (props) => {
 
@@ -24,6 +27,7 @@ const Provider = (props) => {
 
   const clear = () => {
     setBoard(_board);
+    pathFinder.current.clear(_board);
   };
 
   return (
