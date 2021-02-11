@@ -5,12 +5,11 @@
   flex-direction: row;
   justify-content: center;
   height: 60px;
-  border: 1px solid red;
   margin-bottom: 20px;
   padding: 10px 0;
   box-sizing: border-box;
   font-size: 20px;
-  color: white;
+  color: black;
 
   &_select {
     width: 200px;
@@ -18,7 +17,7 @@
     border-radius: none;
     font-family: inherit;
     font-size: inherit;
-    color: inherit;
+    color: white;
     border: none;
     outline: none;
     cursor: pointer;
@@ -44,7 +43,7 @@
     padding: 0 10px;
     margin-right: 20px;
     box-shadow: 0 3px 3px 0 $oc-blue-3;
-    color: inherit;
+    color: white;
     transition: transform 0.2s linear;
 
     &:last-child {
