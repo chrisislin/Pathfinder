@@ -1,5 +1,5 @@
 import PriorityQueue from 'js-priority-queue';
-import { BOARD_ROW, BOARD_COL, VISIT_COLOR, SHORT_COLOR } from 'constants.js';
+import { BOARD_ROW, BOARD_COL, VISIT_COLOR, CLICK_COLOR } from 'constants.js';
 import PathFinder from './pathFinder';
 
 export default class Dijkstra extends PathFinder  {
@@ -26,6 +26,7 @@ export default class Dijkstra extends PathFinder  {
 
         if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
         if (this.dist[currentX][currentY] + 1 >= this.dist[nextX][nextY]) continue;
+        if (this.copy[nextX][nextY].color === CLICK_COLOR) continue;
 
         if (nextX === this.end.x && nextY === this.end.y) {
           this.copy[nextX][nextY].visit = true;
