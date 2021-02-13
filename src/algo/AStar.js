@@ -25,7 +25,7 @@ export default class AStar extends PathFinder {
     return Math.abs(start.x - this.end.x) + Math.abs(start.y - this.end.y);
   }
 
-  execute = () => {
+  execute = () : boolean => {
     const { 
       dist, pq, opened, copy,
       prev, begin, _h, end
@@ -43,11 +43,6 @@ export default class AStar extends PathFinder {
       const currentY = current.y;
 
       opened[currentX][currentY] = false;
-
-      if(currentX === end.x && currentY === end.y) {
-        pq.clear();
-        break;
-      }
       pq.dequeue();
 
       let find = false;
@@ -56,7 +51,7 @@ export default class AStar extends PathFinder {
         const nextY : number = currentY + PathFinder.col[i];
 
         if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
-        if (copy[nextX][nextY] === CLICK_COLOR) continue;
+        if (copy[nextX][nextY].color === CLICK_COLOR) continue;
 
         const g = dist[currentX][currentY] + 1;
         const nextF = g + _h({x : nextX, y: nextY});
@@ -74,14 +69,20 @@ export default class AStar extends PathFinder {
           this.updateBoard(timeFactor);
           timeFactor++;
 
+          if (find) break;
+
           if (opened[nextX][nextY] === false) {
             pq.queue({x: nextX, y: nextY, f: nextF});
             opened[nextX][nextY] = true;
           }
-
-          if(find) break;
         }
       }
+
+      if (find) {
+        pq.clear();
+        return true;
+      }
     }
+    return false;
   }
 }
