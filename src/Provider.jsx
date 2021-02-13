@@ -1,6 +1,6 @@
 import React, { createContext, useState, useRef } from 'react';
 import { BOARD_ROW, BOARD_COL, FIXED_COLOR, INITIAL_COLOR } from './constants';
-import PathFinder from 'algo/index.js';
+import PathFinder from 'algo/pathFinder';
 
 const Context = createContext();
 const _begin = { x: 7, y: 2 };

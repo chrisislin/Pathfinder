@@ -4,7 +4,6 @@ import PathFinder from './pathFinder';
 export default class BellmanFord extends PathFinder {
   constructor({begin, end, board, setState, delay}){
     super({begin, end, board, setState, delay});
-    this.empty = JSON.parse(JSON.stringify(board));
   }
 
   _relax(timeFactor) {
@@ -40,7 +39,6 @@ export default class BellmanFord extends PathFinder {
   }
 
   execute() {
-    this.dist[this.begin.x][this.begin.y] = 0;
     let timeFactor = 1;
     for(let i=1; i<=this.copy.length-1; i++) {
       timeFactor = this._relax(timeFactor);

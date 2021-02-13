@@ -20,7 +20,7 @@ export default class Dijkstra extends PathFinder  {
       const currentY = current.y;
       const currentD = current.d;
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < this.row.length; i++) {
         const nextX = currentX + this.row[i];
         const nextY = currentY + this.col[i];
 
@@ -50,7 +50,11 @@ export default class Dijkstra extends PathFinder  {
       }
       const temp = JSON.parse(JSON.stringify(this.copy));
       setTimeout(() => { this.setState(temp) }, this.delay * currentD);
-      if (find) break;
+      if (find) {
+        this.pq.clear();
+        return true;
+      }
     }
+    return false;
   }
 }
