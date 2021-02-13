@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Context } from 'Provider';
-import { CLICK_COLOR, INITIAL_COLOR } from 'constants.js';
+import { CLICK_COLOR, INITIAL_COLOR, KEYS } from 'constants.js';
 import './Board.scss';
 
 const Board = ({ name, ref }) => {
@@ -16,8 +16,27 @@ const Board = ({ name, ref }) => {
     setClicking(false);
   }
 
+  const changeColor = (e) => {
+    if (e.target.className !== 'board__col') return;
+    if (e.target.style.backgroundColor === INITIAL_COLOR) return;
+    const data = e.target.dataset;
+    const ridx = data.ridx * 1, cidx = data.cidx * 1;
+    const copy = JSON.parse(JSON.stringify(board));
+    copy[ridx][cidx].color = CLICK_COLOR;
+    setBoard(copy);
+  }
+
+  const onClick = (e) => {
+    changeColor(e);
+  };
+
+  const onMouseMove = (e) => {
+    if (!clicking) return;
+    changeColor(e);
+  };
+
   return (
-    <div className="board" onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+    <div className="board" onMouseDown={onMouseDown} onMouseUp={onMouseUp} onClick={onClick} onMouseMove={onMouseMove}>
       {board.map((row, ridx) => (
         <div className="board_row" key={ridx} style={{ display: 'flex', justifyContent: 'center' }}>
           {row.map((col, cidx) => {
@@ -28,18 +47,18 @@ const Board = ({ name, ref }) => {
                 copy[ridx][cidx].color = CLICK_COLOR;
                 setBoard(copy);
               };
-        }
+            }
 
-        return (
+            return (
               <div className="board_col"
-            key={2 * ridx + cidx}
-            onMouseMove={onMouseMove}
-            style={{
-              backgroundColor: (board[ridx][cidx].color || null),
-              transition: (clicking ? 'none' : 'background-color 0.3s linear')
-            }} />
-          )
-        })}
+                key={2 * ridx + cidx}
+                onMouseMove={onMouseMove}
+                style={{
+                  backgroundColor: (board[ridx][cidx].color || null),
+                  transition: (clicking ? 'none' : 'background-color 0.3s linear')
+                }} />
+            )
+              })}
           <br />
         </div>
       ))}
