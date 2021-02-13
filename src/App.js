@@ -1,9 +1,12 @@
 import React from 'react';
 import Container from './components/Container/Container';
+import { Provider } from 'Provider';
 
 const App = () => {
   return (
-    <Container />
+    <Provider>
+      <Container />
+    </Provider>
   );
 };
 
