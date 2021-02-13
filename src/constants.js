@@ -9,3 +9,4 @@ export const CLICK_COLOR = 'gray';
 
 export const DIJKSTRA = 'dijkstra';
 export const BELLMAN_FORD = 'bellman_ford';
+export const A_STAR = 'a-star';
