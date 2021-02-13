@@ -3,7 +3,6 @@ import { DIJKSTRA, BELLMAN_FORD, SHORT_COLOR } from 'constants.js';
 import { Context } from 'Provider';
 import PathFinder from 'algo/index.js';
 import './Header.scss';
-import { clear } from 'sisteransi';
 
 const Header = () => {
   const [type, setType] = useState(DIJKSTRA);
