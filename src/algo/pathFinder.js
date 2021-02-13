@@ -89,7 +89,7 @@ export default class PathFinder {
     }
     path.push({ x: begin.x, y: begin.y });
 
-    for(let i=path.length-1; i>=0; i--) {
+    for(let i=path.length-2; i>0; i--) {
       x = path[i].x;
       y = path[i].y;
       copy[x][y].color = SHORT_COLOR;
