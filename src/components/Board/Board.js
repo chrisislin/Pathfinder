@@ -1,5 +1,7 @@
+// @flow
+
 import React, { useContext, useState } from 'react';
-import { Context } from 'Provider';
+import { Context, type ContextType } from 'Provider';
 import { CLICK_COLOR, INITIAL_COLOR, KEYS } from 'constants.js';
 import './Board.scss';
 

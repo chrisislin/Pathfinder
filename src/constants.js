@@ -13,5 +13,14 @@ export const DIJKSTRA = 'dijkstra';
 export const BELLMAN_FORD = 'bellman_ford';
 export const A_STAR = 'a-star';
 
-// uuid
-
+// Board
+export const BOARD = [];
+for(let i=0; i<BOARD_ROW; i++){
+  BOARD[i] = [];
+  for(let j=0; j<BOARD_COL; j++){
+    BOARD[i][j] = {
+      color: INITIAL_COLOR,
+      visit: false
+    };
+  }
+}
