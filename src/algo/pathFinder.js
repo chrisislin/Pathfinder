@@ -1,64 +1,99 @@
-import { BOARD_ROW, BOARD_COL, VISIT_COLOR, SHORT_COLOR } from 'constants.js';
+// @flow
+
+import { BOARD_ROW, BOARD_COL, SHORT_COLOR } from 'constants.js';
+
+type BoardType = Array<Array<{| color: string, visit: boolean |}>>;
+
+export type ConstructorType = {
+  begin: {| x: number, y: number |},
+  end: {| x: number, y: number |},
+  board: BoardType,
+  setState: (board : BoardType) => void,
+  delay: number
+};
 
 export default class PathFinder {
-  constructor({ begin, end, board, setState, delay }) {
-    this._init();
+
+  begin: {| x: number, y: number |};
+  end: {| x: number, y: number |};
+  copy: BoardType;
+  _setState: (board : BoardType) => void;
+  _delay: number;
+  dist: Array<Array<number>>;
+  prev: Array<Array<{| x: number, y: number |}>>;
+  row : Array<number>;
+  col : Array<number>;
+  timers : Array<number>;
+
+  constructor({ begin, end, board, setState, delay } : ConstructorType){
     this.begin = begin;
     this.end = end;
-    this.copy = JSON.parse(JSON.stringify(board));
-    this.setState = setState;
-    this.delay = delay;
-    this.row = [-1, 1, 0, 0];
-    this.col = [0, 0, -1, 1];
-    this.timers = []
+    this.copy = this._copyBoard(board);
+    this._init();
+    this._setState = setState;
+    this._delay = delay;
   }
 
-  clear(newBoard) {
-    this.copy = JSON.parse(JSON.stringify(newBoard));
+  static row = [-1,1,0,0];
+  static col = [0,0,-1,1];
+  static timers = [];
+
+  clear = (newBoard : BoardType) => {
+    this.copy = this._copyBoard(newBoard);
     this._init();
   }
-  _init() {
+
+  _copyBoard = (target : BoardType) : BoardType => {
+    return JSON.parse(JSON.stringify(target));
+  }
+
+  updateBoard = (timeFactor : number) => {
+    const temp = this._copyBoard(this.copy);
+    const timer = setTimeout(() => { this._setState(temp); }, timeFactor*this._delay);
+    PathFinder.timers.push(timer);
+  }
+
+  _init = () => {
     this.dist = new Array(BOARD_ROW);
     this.prev = new Array(BOARD_ROW);
-
-    for (let i = 0; i < BOARD_ROW; i++) {
+    for(let i=0; i<BOARD_ROW; i++) {
       this.dist[i] = [];
       this.prev[i] = [];
-
-      for (let j = 0; j < BOARD_COL; j++) {
+      for(let j=0; j<BOARD_COL; j++) {
         this.dist[i][j] = Infinity;
         this.prev[i][j] = { x: -1, y: -1 };
       }
     }
+    this.dist[this.begin.x][this.begin.y] = 0;
   }
 
   clearTimers() {
-    this.timers.forEach((timer) => { clearTimeout(timer); })
-    this.timers = [];
+    PathFinder.timers.forEach((timer : TimeoutID) => { clearTimeout(timer); });
+    PathFinder.timers = [];
   }
 
-  paintShortestPath() {
-    this.copy[this.end.x][this.end.y].visit = false;
-    const path = [];
-    let x = this.end.x;
-    let y = this.end.y;
+  paintShortestPath = () => {
+    const { copy, begin, end, prev, updateBoard } = this;
 
-    while (this.prev[x][y].x !== -1 && this.prev[x][y].y !== -1) {
+    copy[end.x][end.y].visit = false;
+
+    const path : Array<{| x: number, y: number |}> = [];
+    let x : number = end.x;
+    let y : number = end.y;
+
+    while(prev[x][y].x !== -1 && prev[x][y].y !== -1) {
       path.push({ x, y });
       const tempX = x, tempY = y;
-      x = this.prev[tempX][tempY].x;
-      y = this.prev[tempX][tempY].y;
+      x = prev[tempX][tempY].x;
+      y = prev[tempX][tempY].y;
     }
-    path.push({ x: this.begin.x, y: this.begin.y });
+    path.push({ x: begin.x, y: begin.y });
 
-    for (let i = path.length - 2; i >= 1; i--) {
+    for(let i=path.length-1; i>=0; i--) {
       x = path[i].x;
       y = path[i].y;
-      this.copy[x][y].color = SHORT_COLOR;
-      const temp = JSON.parse(JSON.stringify(this.copy));
-      const timer = setTimeout(() => { this.setState(temp) }, this.delay * (path.length - i));
-      this.timers.push(timer);
+      copy[x][y].color = SHORT_COLOR;
+      updateBoard(path.length-i);
     }
-
   }
 }

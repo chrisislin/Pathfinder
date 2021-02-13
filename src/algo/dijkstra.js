@@ -1,60 +1,63 @@
-import PriorityQueue from 'js-priority-queue';
-import { BOARD_ROW, BOARD_COL, VISIT_COLOR, CLICK_COLOR } from 'constants.js';
-import PathFinder from './pathFinder';
+// @flow
 
-export default class Dijkstra extends PathFinder  {
-  constructor({ begin, end, board, setState, delay }) {
-    super({ begin, end, board, setState, delay });
-    this.pq = new PriorityQueue({ comparator: (a, b) => a.d - b.d });
+import PriorityQueue from 'js-priority-queue';
+import {
+  BOARD_ROW,
+  BOARD_COL,
+  VISIT_COLOR,
+  CLICK_COLOR,
+} from 'constants.js';
+import PathFinder, { type ConstructorType } from './pathFinder';
+
+export default class Dijkstra extends PathFinder {
+
+  constructor(args : ConstructorType){
+    super(args);
+    this.pq = new PriorityQueue<Object>({ comparator: (a, b) => a.d - b.d });
   }
 
-  execute() {
-    this.pq.queue({ x: this.begin.x, y: this.begin.y, d: 0 });
-    this.dist[this.begin.x][this.begin.y] = 0;
+  execute = () => {
+    const { pq, dist, prev, copy, begin, end } = this;
+
+    pq.queue({ x: begin.x, y: begin.y, d: 0 });
     let find = false;
 
-    while (this.pq.length) {
-      const current = this.pq.peek();
-      this.pq.dequeue();
-      const currentX = current.x;
-      const currentY = current.y;
-      const currentD = current.d;
-
-      for (let i = 0; i < this.row.length; i++) {
-        const nextX = currentX + this.row[i];
-        const nextY = currentY + this.col[i];
-
+    while(pq.length) {
+      const current : {| x: number, y: number, d: number |} = pq.peek();
+      pq.dequeue();
+      const currentX : number = current.x;
+      const currentY : number = current.y;
+      const currentD : number = current.d;
+      
+      let isUpdated = false;
+      for(let i=0; i<PathFinder.row.length; i++) {
+        const nextX = currentX + PathFinder.row[i];
+        const nextY = currentY + PathFinder.col[i];
+      
         if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
-        if (this.dist[currentX][currentY] + 1 >= this.dist[nextX][nextY]) continue;
-        if (this.copy[nextX][nextY].color === CLICK_COLOR) continue;
+        if (dist[currentX][currentY] === Infinity || dist[currentX][currentY] + 1 >= dist[nextX][nextY]) continue;
+        if (copy[nextX][nextY].color === CLICK_COLOR) continue;
 
-        if (nextX === this.end.x && nextY === this.end.y) {
-          this.copy[nextX][nextY].visit = true;
-          this.prev[nextX][nextY].x = currentX;
-          this.prev[nextX][nextY].y = currentY;
+        if (nextX === end.x && nextY === end.y) {
+          copy[nextX][nextY].visit = true;
+          prev[nextX][nextY] = { x: currentX, y: currentY };
+          isUpdated = true;
           find = true;
           break;
         }
 
-        this.copy[nextX][nextY].color = VISIT_COLOR;
-        this.copy[nextX][nextY].visit = true;
+        isUpdated = true;
+        copy[nextX][nextY] = { color: VISIT_COLOR, visit: true };
+        dist[nextX][nextY] = dist[currentX][currentY] + 1;
+        prev[nextX][nextY] = { x: currentX, y: currentY };
 
-        this.dist[nextX][nextY] = this.dist[currentX][currentY] + 1;
-        this.prev[nextX][nextY].x = currentX;
-        this.prev[nextX][nextY].y = currentY;
-        this.pq.queue({
-          x: nextX,
-          y: nextY,
-          d: this.dist[nextX][nextY]
-        });
+        pq.queue({ x: nextX, y: nextY, d: dist[nextX][nextY] });
       }
-      const temp = JSON.parse(JSON.stringify(this.copy));
-      setTimeout(() => { this.setState(temp) }, this.delay * currentD);
-      if (find) {
-        this.pq.clear();
-        return true;
+      
+      if (isUpdated) {
+        this.updateBoard(currentD);
+        if (find) break;
       }
     }
-    return false;
   }
 }

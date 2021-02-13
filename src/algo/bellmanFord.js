@@ -1,27 +1,32 @@
-import { BOARD_ROW, BOARD_COL, VISIT_COLOR, CLICK_COLOR } from 'constants.js';
+// @flow
+
+import {
+  BOARD_ROW,
+  BOARD_COL,
+  VISIT_COLOR,
+  CLICK_COLOR,
+} from 'constants.js';
 import PathFinder from './pathFinder';
 
 export default class BellmanFord extends PathFinder {
-  constructor({begin, end, board, setState, delay}){
-    super({begin, end, board, setState, delay});
-  }
 
-  _relax(timeFactor) {
-    const copy = this.copy;
-    const dist = this.dist;
-    const prev = this.prev;
+  _relax = (timeFactor : number) : number => {
+    const { copy, dist, prev, end } = this;
+  
     for(let i=0; i<BOARD_ROW; i++){
       for(let j=0; j<BOARD_COL; j++){
+
         let isUpdated = false;
-        for(let k=0; k<4; k++){
-          const nextX = i + this.row[k];
-          const nextY = j + this.col[k];
+        for(let k=0; k<PathFinder.row.length; k++){
+          const nextX = i + PathFinder.row[k];
+          const nextY = j + PathFinder.col[k];
+
           if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
           if (dist[i][j] === Infinity || dist[i][j] + 1 >= dist[nextX][nextY]) continue;
           if (copy[nextX][nextY].color === CLICK_COLOR) continue;
-        
+
           dist[nextX][nextY] = dist[i][j] + 1;
-          if (!(nextX === this.end.x && nextY === this.end.y)) {
+          if (!(nextX === end.x && nextY === end.y)) {
             copy[nextX][nextY].color = VISIT_COLOR;
             copy[nextX][nextY].visit = true;
           }
@@ -29,8 +34,7 @@ export default class BellmanFord extends PathFinder {
           isUpdated = true;
         }
         if (isUpdated) {
-          const temp = JSON.parse(JSON.stringify(copy));
-          setTimeout(() => { this.setState(temp) }, this.delay*timeFactor);
+          this.updateBoard(timeFactor);
           timeFactor++;
         }
       }
@@ -38,15 +42,14 @@ export default class BellmanFord extends PathFinder {
     return timeFactor;
   }
 
-  execute() {
+  execute = () => {
+    const { copy, _relax, end } = this;
     let timeFactor = 1;
-    for(let i=1; i<=this.copy.length-1; i++) {
-      timeFactor = this._relax(timeFactor);
+    for(let i=1; i<=copy.length-1; i++) {
+      timeFactor = _relax(timeFactor);
       timeFactor++;
     }
-    this.copy[this.end.x][this.end.y].visit = true;
-    const temp = JSON.parse(JSON.stringify(this.copy));
-    const timer = setTimeout(() => { this.setState(this.copy) }, this.delay*timeFactor);
-    this.timers.push(timer);
+    copy[end.x][end.y].visit = true;
+    this.updateBoard(timeFactor);
   }
-} 
+}
