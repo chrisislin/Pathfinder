@@ -1,73 +1,69 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { DIJKSTRA, BELLMAN_FORD, SHORT_COLOR, A_STAR, DFS } from 'constants.js';
-import { Context } from 'Provider';
+// @flow
+
+import React, { useState, useContext } from 'react';
+import { 
+  DIJKSTRA, BELLMAN_FORD, A_STAR, DFS,
+  DELAY_SLOWEST, DELAY_SLOW, DELAY_NORMAL, DELAY_FAST, DELAY_FASTEST
+} from 'constants.js';
+import { Context, type ContextType } from 'Provider';
 import PathFinder from 'algo/index.js';
 import './Header.scss';
 
 const Header = () => {
-  const [type, setType] = useState(DIJKSTRA);
-  const [delay, setDelay] = useState(300);
-  const context = useContext(Context);
-  const { begin, end, board, setBoard, pathFinder, clear } = context;
 
-  const onSelectChange = (e) => {
+  const [type, setType] = useState<string>(DIJKSTRA);
+  const context = useContext<ContextType>(Context);
+  const { 
+    begin, end, updateItem, delay,
+    pathFinder, clear, board,
+    setIsPathExist
+  } = context;
+
+  const onAlgoChange = (e : ElementEvent<HTMLSelectElement>) => {
     setType(e.target.value);
   };
 
-  const onDelayChange = (e) => {
-    setDelay(e.target.value);
+  const onDelayChange = (e : ElementEvent<HTMLSelectElement>) => {
+    delay.current = parseInt(e.target.value);
   };
 
-
-  const onVisualize = (_e) => {
-    pathFinder.current = new PathFinder[type]({
+  const onVisualize = () => {
+    pathFinder.current  = new PathFinder[type]({
       begin,
       end,
-      board,
-      setState: setBoard,
-      delay
+      updateItem,
+      board: board.current
     });
-    pathFinder.current.execute();
+    const isPossiblePath = pathFinder.current.execute();
+    setIsPathExist(isPossiblePath);
   };
 
-  const onClear = () => {
+  const onClear = () => { 
     clear();
   };
 
-  useEffect(() => {
-    if (board[end.x][end.y].visit) {
-      pathFinder.current.paintShortestPath();
-    }
-  }, [board, pathFinder, end]);
-
-  useEffect(() => {
-    if (board[end.x][end.y].color === SHORT_COLOR) {
-      pathFinder.current.clearTimers();
-    }
-  }, [board, pathFinder, end]);
-
   return (
-    <header className="header">
-      <select className="header_select" onChange={onSelectChange}>>
+    <div className="content-header">
+      <select className="content-header__select" onChange={onAlgoChange} id="algorithm">
         <option value={DIJKSTRA} defaultChecked={true}>Dijkstra</option>
         <option value={BELLMAN_FORD}>Bellman-Ford</option>
-        <option value={A_STAR}>A Star</option>
         <option value={DFS}>DFS</option>
+        <option value={A_STAR}>A*</option>
       </select>
-      <select className="header_select" onChange={onDelayChange} defaultValue={300}>
-        <option value={550}>slowest</option>
-        <option value={450}>slow</option>
-        <option value={300}>default</option>
-        <option value={150}>fast</option>
-        <option value={50}>fastest</option>
+      <select className="content-header__select" onChange={onDelayChange} defaultValue={300}>
+        <option value={DELAY_SLOW}>slowest</option>
+        <option value={DELAY_SLOWEST}>slow</option>
+        <option value={DELAY_NORMAL}>normal</option>
+        <option value={DELAY_FAST}>fast</option>
+        <option value={DELAY_FASTEST}>fastest</option>
       </select>
-      <button className="header_button" onClick={onVisualize}>
-        Visualize this
+      <button className="content-header__button" onClick={onVisualize}>
+        Visualize!
       </button>
-      <button className="header_button" onClick={onClear}>
+      <button className="content-header__button" onClick={onClear}>
         Clear
       </button>
-    </header>
+    </div>
   );
 };
 
