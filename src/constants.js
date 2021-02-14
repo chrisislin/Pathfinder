@@ -2,10 +2,10 @@ import uuidv4 from 'uuid/v4';
 
 export const BOARD_ROW = 16;
 export const BOARD_COL = 30;
-export const VISIT_COLOR = 'deepskyblue';
-export const SHORT_COLOR = 'red';
+export const VISIT_COLOR = 'skyblue';
+export const SHORT_COLOR = 'tomato';
 export const FIXED_COLOR = 'black';
-export const INITIAL_COLOR = 'silver';
+export const INITIAL_COLOR = 'wheat';
 export const CLICK_COLOR = 'gray';
 
 
