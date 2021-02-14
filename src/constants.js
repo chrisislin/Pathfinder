@@ -14,6 +14,19 @@ export const BELLMAN_FORD = 'bellman_ford';
 export const A_STAR = 'a-star';
 export const DFS = 'DFS';
 
+// Item state
+export const ITEM_INITIAL = 'ITEM_INITIAL';
+export const ITEM_VISITED = 'ITEM_VISITED';
+export const ITEM_CLICKED = 'ITEM_CLICKED';
+export const ITEM_SHORTEST = 'ITEM_SHORTEST';
+
+// Delay
+export const DELAY_SLOWEST = 550;
+export const DELAY_SLOW = 450;
+export const DELAY_NORMAL = 300;
+export const DELAY_FAST = 150;
+export const DELAY_FASTEST = 50;
+
 // Board
 export const BOARD = [];
 for(let i=0; i<BOARD_ROW; i++){
