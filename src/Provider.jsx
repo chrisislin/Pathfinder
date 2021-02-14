@@ -25,8 +25,8 @@ export type ContextType = {|
 |};
 
 const Context = createContext<ContextType>();
-const _begin = { x: 7, y: 2 };
-const _end = { x: 15, y: 10 };
+const _begin = { x: 7, y: 4 };
+const _end = { x: 7, y: 25 };
 const _board : BoardType = new Array(BOARD_ROW);
 for(let i=0; i<BOARD_ROW; i++){
   _board[i] = [];

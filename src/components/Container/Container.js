@@ -4,6 +4,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import Modal from 'react-modal';
 import Header from '../Header/Header';
 import Board from '../Board/Board';
+import ModalInfo from '../Info/Info';
 import { Context } from 'Provider';
 import './Container.scss';
 
@@ -18,7 +19,7 @@ const Container = () => {
   };
 
   const context = useContext(Context);
-  const { isPathExist, pathFinder, clear } : ContextType = context;
+  const { isPathExist, pathFinder, clear, isHelped, setIsHelped } : ContextType = context;
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -30,12 +31,16 @@ const Container = () => {
   }, [isPathExist, pathFinder, clear]);
 
   const onClose = () => { setIsOpen(false); };
-
+  const onHelpClose = () => {
+    setIsHelped(false);
+  };
+  
   return (
     <>
       <header className="header">
         <h1 className="header__title">Pathfinding Visualizer</h1>
       </header>
+      <ModalInfo isHelped={isHelped} onHelpClose={onHelpClose} />
       <Modal
         className="modal"
         isOpen={isOpen}
