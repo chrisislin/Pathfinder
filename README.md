@@ -1,6 +1,8 @@
 # A Pathfinding Visualizer
-[LINK HERE](https://chrisislin.github.io/Pathfinder/)
 <img src="./gifs/pathfinder.gif">
+
+### [LINK HERE](https://chrisislin.github.io/Pathfinder/)
+
 
 ## Algorithms
 * Dijkstra
