@@ -1,4 +1,4 @@
-
+import uuidv4 from 'uuid/v4';
 
 export const BOARD_ROW = 16;
 export const BOARD_COL = 30;
@@ -13,6 +13,16 @@ export const DIJKSTRA = 'dijkstra';
 export const BELLMAN_FORD = 'bellman_ford';
 export const A_STAR = 'a-star';
 export const DFS = 'DFS';
+export const BFS = 'BFS';
+
+// uuid
+export const KEYS = [];
+for (let i = 0; i < BOARD_ROW; i++) {
+  KEYS[i] = [];
+  for (let j = 0; j < BOARD_COL; j++) {
+    KEYS[i][j] = uuidv4();
+  }
+}
 
 // Item state
 export const ITEM_INITIAL = 'ITEM_INITIAL';
