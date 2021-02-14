@@ -3,11 +3,14 @@
 import React, { createContext, useState, useRef, type Node } from 'react';
 import { BOARD_ROW, BOARD_COL, ITEM_CLICKED, FIXED_COLOR, INITIAL_COLOR } from './constants';
 import PathFinder from 'algo/pathFinder';
+import Timer from 'algo/Timer';
 
 type PositionType = {|x: number, y: number|};
 type BoardType = Array<Array<{|color: string, visit: boolean|}>>;
 
 export type ContextType = {|
+  isVisualized: boolean,
+
   begin: PositionType,
   end: PositionType,
   setBegin: (PositionType) => void,
@@ -43,6 +46,7 @@ const Provider = (props : {| children: Node |}) => {
   const [end, setEnd] = useState<PositionType>(_end);
   const [board, setBoard] = useState<BoardType>(_board);
   const [isPathExist, setIsPathExist] = useState<boolean>(true);
+  const [isVisualized, setIsVisualized] = useState<boolean>(false);
   const pathFinder = useRef<any>(null);
 
   const clear = () => {

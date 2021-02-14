@@ -11,6 +11,11 @@
   font-size: 20px;
   color: black;
 
+  %disabled {
+    background-color: $oc-gray-5;
+    box-shadow: none;
+  }
+
   &_select {
     width: 200px;
     margin-right: 20px;
@@ -29,9 +34,15 @@
     background-position-x: 100%;
     background-position-y: 5px;
     padding-left: 10px;
+
+    &:disabled {
+      @extend %disabled;
+    }
   }
 
   &_button {
+    $button: &;
+    display: flex;
     font-family: inherit;
     font-weight: bold;
     font-size: inherit;
@@ -45,6 +56,12 @@
     box-shadow: 0 3px 3px 0 $oc-blue-3;
     color: white;
     transition: transform 0.2s linear;
+    outline: none;
+
+    &--teal {
+      @extend #{$button};
+      background-color: $oc-teal-5;
+    }
 
     &:last-child {
       margin-right: 0;
@@ -52,6 +69,10 @@
 
     &:hover {
       transform: translateY(-10%);
+    }
+
+    &:disabled {
+      @extend %disabled;
     }
   }
 } 
