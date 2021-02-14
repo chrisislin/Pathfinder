@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid';
+
 
 export const BOARD_ROW = 16;
 export const BOARD_COL = 30;
@@ -14,17 +14,7 @@ export const BELLMAN_FORD = 'bellman_ford';
 export const A_STAR = 'a-star';
 export const DFS = 'DFS';
 
-// uuid
-export const KEYS = [];
-for (let i=0; i<BOARD_ROW; i++) {
-  KEYS[i] = [];
-  for (let j=0; j<BOARD_COL; j++) {
-    KEYS[i][j] = uuidv4();
-  }
-}
-
 // Item state
-export const ITEM_FIXED = 'ITEM_FIXED';
 export const ITEM_INITIAL = 'ITEM_INITIAL';
 export const ITEM_VISITED = 'ITEM_VISITED';
 export const ITEM_CLICKED = 'ITEM_CLICKED';
