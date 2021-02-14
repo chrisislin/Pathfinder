@@ -1,4 +1,4 @@
-import uuidv4 from 'uuid/v4';
+
 
 export const BOARD_ROW = 16;
 export const BOARD_COL = 30;
@@ -26,15 +26,6 @@ export const DELAY_SLOW = 450;
 export const DELAY_NORMAL = 300;
 export const DELAY_FAST = 150;
 export const DELAY_FASTEST = 50;
-
-// uuid
-export const KEYS = [];
-for (let i=0; i<BOARD_ROW; i++) {
-  KEYS[i] = [];
-  for (let j=0; j<BOARD_COL; j++) {
-    KEYS[i][j] = uuidv4();
-  }
-}
 
 // Board
 export const BOARD = [];
