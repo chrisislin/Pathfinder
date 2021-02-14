@@ -20,7 +20,7 @@ const Board = ({ name, ref }) => {
 
   const changeColor = (e) => {
     if (e.target.className !== 'board__col') return;
-    if (e.target.style.backgroundColor === INITIAL_COLOR) return;
+    if (e.target.style.backgroundColor !== INITIAL_COLOR) return;
     const data = e.target.dataset;
     const ridx = data.ridx * 1, cidx = data.cidx * 1;
     const copy = JSON.parse(JSON.stringify(board));
