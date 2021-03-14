@@ -4,8 +4,8 @@ import Queue from 'queue-fifo';
 import {
   BOARD_ROW,
   BOARD_COL,
-  ITEM_CLICKED,
-  ITEM_VISITED
+  CLICK_COLOR,
+  VISIT_COLOR
 } from 'constants.js';
 import PathFinder, { type ConstructorType } from './pathFinder';
 
@@ -42,11 +42,11 @@ export default class Bfs extends PathFinder {
         const nextY = current.y + PathFinder.col[i];
 
         if (nextX < 0 || nextX >= BOARD_ROW || nextY < 0 || nextY >= BOARD_COL) continue;
-        if (visited[nextX][nextY] || board[nextX][nextY] === ITEM_CLICKED) continue;
+        if (visited[nextX][nextY] || board[nextX][nextY].color === CLICK_COLOR) continue;
 
         visited[nextX][nextY] = true;
         prev[nextX][nextY] = { x: current.x, y: current.y };
-        updateItem(nextX, nextY, ITEM_VISITED, timeFactor);
+        updateItem(nextX, nextY, VISIT_COLOR, timeFactor);
         timeFactor++;
         q.enqueue({ x: nextX, y: nextY });
 

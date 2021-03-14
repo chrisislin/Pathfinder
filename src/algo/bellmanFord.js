@@ -10,6 +10,20 @@ import PathFinder from './pathFinder';
 
 export default class BellmanFord extends PathFinder {
 
+  execute = () : boolean => {
+    const { copy, _relax } = this;
+    let timeFactor = 1, find = false;
+    for(let i=1; i<=copy.length-1; i++) {
+      const relaxedResult = _relax(timeFactor);
+      timeFactor = relaxedResult.timeFactor;
+      timeFactor++;
+      if (relaxedResult.find) find = true;
+    }
+    copy[this.end.x][this.end.y].visit = true;
+    this.updateBoard(timeFactor);
+    return find;
+  }
+
   _relax = (timeFactor : number) : {| timeFactor: number, find: boolean|} => {
     const { copy, dist, prev, end } = this;
     let find = false;
@@ -44,17 +58,5 @@ export default class BellmanFord extends PathFinder {
     return { timeFactor, find };
   }
 
-  execute = () : boolean => {
-    const { copy, _relax } = this;
-    let timeFactor = 1, find = false;
-    for(let i=1; i<=copy.length-1; i++) {
-      const relaxedResult = _relax(timeFactor);
-      timeFactor = relaxedResult.timeFactor;
-      timeFactor++;
-      if (relaxedResult.find) find = true;
-    }
-    copy[this.end.x][this.end.y].visit = true;
-    this.updateBoard(timeFactor);
-    return find;
-  }
+  
 }

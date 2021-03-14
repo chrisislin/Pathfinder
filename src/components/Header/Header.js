@@ -64,10 +64,8 @@ const Header = () => {
     <header className="header">
       <select className="header_select" onChange={onSelectChange} disabled={isVisualized}>
         <option value={DIJKSTRA} defaultChecked={true}>Dijkstra</option>
-        <option value={BELLMAN_FORD}>Bellman-Ford</option>
         <option value={A_STAR}>A Star</option>
         <option value={DFS}>DFS</option>
-        <option value={DFS}>BFS</option>
       </select>
       <select className="header_select" onChange={onDelayChange} defaultValue={300} disabled={isVisualized}>
         <option value={550}>slowest</option>
